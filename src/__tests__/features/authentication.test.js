@@ -1,5 +1,4 @@
 import { waitFor, act } from '@testing-library/react';
-import { at } from 'lodash';
 
 const email = 'test@example.com';
 const user = {
@@ -13,15 +12,18 @@ describe('Signup', () => {
   mockServers({login: {data: authenticatedUser}, signup: {data: {email}}});
 
   it('signups and logs in the user', async () => {
-    const {container} = mountApp();
+    const {container, getByText} = mountApp();
     clickLabel('Signup');
+
     expect(container).toHaveTextContent("Sign up");
 
     fillIn('Enter your Email').with(user.email);
     fillIn('Enter your Password').with(user.password);
 
-    act(() => {
-      clickOn('Create Account');
+    clickOn('Create Account');
+
+    await waitFor(() => {
+      expect(getByText("Please login to continue")).toBeInTheDocument();
     });
 
     await waitFor(() => {
@@ -31,12 +33,10 @@ describe('Signup', () => {
     fillIn('Enter your Email').with(user.email);
     fillIn('Enter your Password').with(user.password);
 
-    act(() => {
-      clickOn('Login');
-    });
+    clickOn('Login');
 
     await waitFor(() => {
-      expect(container).toHaveTextContent("Send Text Messages");
+      expect(getByText("Text Messages")).toBeInTheDocument();
     });
   });
 });
