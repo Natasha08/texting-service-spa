@@ -9,7 +9,19 @@ export const fillIn = (labelText) => ({
 
 export const clickOn = (buttonText) => {
   fireEvent(
-    screen.getByText(buttonText),
+    screen.getByRole('button', {
+      name: buttonText
+    }),
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    }),
+  );
+};
+
+export const clickLabel = (labelText) => {
+  fireEvent(
+    screen.getByText(labelText),
     new MouseEvent('click', {
       bubbles: true,
       cancelable: true,

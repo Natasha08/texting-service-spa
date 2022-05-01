@@ -1,4 +1,5 @@
-import { waitFor } from '@testing-library/react';
+import { waitFor, act } from '@testing-library/react';
+import { at } from 'lodash';
 
 const email = 'test@example.com';
 const user = {
@@ -13,21 +14,26 @@ describe('Signup', () => {
 
   it('signups and logs in the user', async () => {
     const {container} = mountApp();
-    clickOn('Sign up');
+    clickLabel('Signup');
     expect(container).toHaveTextContent("Sign up");
-
 
     fillIn('Enter your Email').with(user.email);
     fillIn('Enter your Password').with(user.password);
-    clickOn('Create Account');
+
+    act(() => {
+      clickOn('Create Account');
+    });
 
     await waitFor(() => {
-      expect(container).toHaveTextContent("Login");
+      expect(container).toHaveTextContent("Please login to continue");
     });
 
     fillIn('Enter your Email').with(user.email);
     fillIn('Enter your Password').with(user.password);
-    clickOn('Login');
+
+    act(() => {
+      clickOn('Login');
+    });
 
     await waitFor(() => {
       expect(container).toHaveTextContent("Send Text Messages");

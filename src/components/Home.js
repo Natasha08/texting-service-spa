@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 
-import LoginForm from './registration/LoginForm';
-import SignupForm from './registration/SignupForm';
+import LoginForm from './registration/Login';
+import SignupForm from './registration/Signup';
 
 const RequireAuth = ({children}) => {
   const user = useSelector(({user}) => user);
@@ -30,7 +30,7 @@ export default function Home() {
         <div className="Main">
           <Routes>
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/signup" element={<SignupForm/>}/>
+            <Route path="/signup" element={<SignupForm />}/>
 
             <Route index path="/" element={<RequireAuth><div>Send Text Messages</div></RequireAuth>}/>
           </Routes>

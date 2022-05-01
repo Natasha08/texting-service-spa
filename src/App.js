@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import '@fontsource/roboto';
 
 import Home from './components/Home.js';
-import './App.css';
+import './App.scss';
 
 export default function App({initialEntries = ['/'], providedStore=store, Router=BrowserRouter}={}) {
   return (
