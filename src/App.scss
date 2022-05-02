@@ -7,7 +7,22 @@ body {
 
   .Main {
     width: 100%;
+    max-width: 100vw;
     padding: 0 5px 10px 5px;
+    display: contents;
+
+    & > div {
+      width: 100%;
+      max-width: 1000px;
+
+      .css-144ebsl {
+        max-width: 100%;
+      }
+
+      form {
+        max-width: 500px;
+      }
+    }
   }
 
   .Footer {
@@ -62,23 +77,22 @@ body {
 .new-message-form {
   display: grid;
   text-align: center;
-  grid-template-rows: 5rem 5rem 5rem 3rem;
+  grid-template-rows: 5em 5em 5em 3em;
   grid-template-areas:
     'header'
     'input'
     'input'
     'button';
-  max-width: 500px;
+  max-width: 1000px;
+  margin: auto;
 
   .title {
     padding-top: 25px;
   }
 }
 
-#messages {
-  max-width: 1000px;
-
-  .css-144ebsl {
-    max-width: 100%;
-  }
+.if-being-honest {
+    gap: 0 1em;
+    grid-template-areas: "input     input"
+    "messages  action";
 }

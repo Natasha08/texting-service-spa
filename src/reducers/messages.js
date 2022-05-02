@@ -13,11 +13,17 @@ const messages = createSlice({
     messageCreated: (state, action) => {
       return _.orderBy([action.payload, ...state], 'created_at', 'desc');
     },
+    messageUpdated: (state, action) => {
+      const updatedMessage = action.payload;
+      const messages = _.reject(state, {id: updatedMessage.id});
+
+      return [...messages, updatedMessage];
+    },
     APP_RESET: () => {
       return initialState;
     }
   },
 });
 
-export const {receivedMessages, messageCreated, APP_RESET} = messages.actions;
+export const {receivedMessages, messageCreated, messageUpdated, APP_RESET} = messages.actions;
 export default messages;

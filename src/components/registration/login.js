@@ -25,13 +25,15 @@ const LoginForm = () => {
       const error = _.get(result, 'error.data.error', 'Error logging in, please try again.');
       const errorMessage = emptyForm ? '' : error;
       setError(errorMessage);
+      result.reset();
     } else if (result.isSuccess && result.data.token) {
+      result.reset();
       navigate('/');
     }
   }, [result.isLoading, emptyForm, result.isError]);
 
   return (
-    <Box sx={{width: '100%'}}>
+    <Box id="login" sx={{maxWidth: '1200px', textAlign: 'center'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={LOGIN_TAB} aria-label="login and signup tabs">
           <Tab label="Login" aria-label="login to continue" />

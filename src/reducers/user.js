@@ -12,11 +12,11 @@ const user = createSlice({
     signedUp: (state, action) => {
       return action.payload;
     },
-    APP_RESET: () => {
+    logout: (state, action) => {
       return initialState;
     }
   },
 });
 
-export const {loggedIn, signedUp, APP_RESET} = user.actions;
+export const {loggedIn, signedUp, logout} = user.actions;
 export default user;

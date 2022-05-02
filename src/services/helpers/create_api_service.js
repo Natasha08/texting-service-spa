@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import _ from 'lodash';
+import { logout } from '../../reducers/user';
 
 const defaultQuery = ({url, method, params}) => (body) => ({
   url,
@@ -11,8 +12,15 @@ const defaultOnQueryStarted = ({onSuccess, onFailure}) => async (id, {dispatch, 
   try {
     const {data} = await queryFulfilled;
     _.isFunction(onSuccess) && dispatch(onSuccess(data));
-  } catch (error) {
-    _.isFunction(onFailure) && dispatch(onFailure(error));
+  } catch (info) {
+    const tokenExpired = _.get(info, 'error.status') === 401;
+
+    if (tokenExpired) {
+      dispatch(logout());
+    } else {
+      _.isFunction(onFailure) && dispatch(onFailure(info));
+    }
+
   }
 };
 

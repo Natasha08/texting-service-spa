@@ -24,13 +24,15 @@ const SignupForm = () => {
       const error = _.get(result, 'error.data.error', 'Error signing up, please try again.');
       const errorMessage = emptyForm ? '' : error;
       setError(errorMessage);
+      result.reset();
     } else if (result.isSuccess) {
+      result.reset();
       navigate('/login');
     }
   }, [result.isLoading, emptyForm, result.isError]);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box id="signup" sx={{maxWidth: '1200px', textAlign: 'center'}}>
       <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
         <Tabs value={SIGNUP_TAB} aria-label="login and signup tabs">
           <Tab label="Login" aria-label="go to login" onClick={() => navigate('/login')} />

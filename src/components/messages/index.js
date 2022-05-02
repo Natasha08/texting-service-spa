@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
+import actionCable from 'action-cable-react-jwt';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import { useGetMessagesMutation } from '../../services/api_service';
+import { preventDefault } from '../helpers/event';
+import { messageUpdated } from '../../reducers/messages';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const MESSAGES_TAB = 0;
+const RETRYING_ERROR = 'Failed to send text message after several attempts, retrying with a new SMS provider';
 
 const SetChip = ({label, color, status}) => {
   const chipColor = label === status ? {color} : {};
@@ -24,6 +34,13 @@ const SetChip = ({label, color, status}) => {
 const Messages = () => {
   const [fetched, setFetched] = useState(false);
   const messages = useSelector(({messages=[]}) => messages);
+  const token = useSelector(({user}) => user?.token);
+  const [channel, setChannel] = useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [alert, setAlert] = React.useState({});
+
+  const dispatch = useDispatch();
+
 
   const [getMessages, result] = useGetMessagesMutation({fixedCacheKey: 'messages'});
   const navigate = useNavigate();
@@ -41,6 +58,49 @@ const Messages = () => {
     }
   }, [result.isLoading, result.isError]);
 
+  useEffect(() => {
+    if (!channel) {
+      const cable = actionCable.createConsumer(`ws://localhost:3000/cable`, token);
+      const channel = cable.subscriptions.create({channel: "ChatChannel"});
+      channel.received = (data={}) => {
+        if (data.error) {
+          if (data.error === RETRYING_ERROR) {
+            setAlert({message: data.error.message, severity: 'warning'});
+            setOpen(true);
+          } else {
+            setAlert({message: data.error.message, severity: 'error'});
+            setOpen(true);
+          }
+          if (!_.isEmpty(data.message)) {
+            dispatch(messageUpdated(data.message));
+          }
+        } else {
+          setAlert({message: "message delivered!", severity: 'success'});
+          setOpen(true);
+          if (!_.isEmpty(data.message)) {
+            console.log("IM WINNING", data)
+
+            dispatch(messageUpdated(data.message));
+          }
+        }
+      };
+      setChannel(channel);
+    }
+  });
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const fetchMessages = () => {
+    setFetched(false);
+    getMessages();
+  };
+
   return (
     <Box id="messages" sx={{maxWidth: '1200px', textAlign: 'left'}}>
       <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
@@ -49,14 +109,24 @@ const Messages = () => {
           <Tab label="Create Message" aria-label="create new message" onClick={() => navigate('/messages/new')} />
         </Tabs>
       </Box>
-      {!fetched ? (
-        <div>Getting Messages...</div>
-      ) : (
         <Box style={{'marginTop': '20px'}}>
           <Typography gutterBottom variant="subtitle2" component="em">
+            <span onClick={preventDefault(fetchMessages)}>
+              <RefreshIcon />
+            </span>
             List of text messages sent, with their statuses
           </Typography>
-
+          {!fetched && <CircularProgress
+            aria-label="fetch messages"
+            size={24}
+            sx={{
+              color: 'blue',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />}
           {messages.length ? messages.map((message) => (
             <div key={message.sms_message_id}>
               <Box sx={{my: 3, mx: 2}}>
@@ -91,7 +161,11 @@ const Messages = () => {
             <div>There are no messages yet.</div>
           )}
         </Box>
-      )}
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={() => setOpen(false)} severity={alert.severity} sx={{width: '100%'}}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

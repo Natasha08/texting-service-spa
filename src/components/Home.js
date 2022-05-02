@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 import LoginForm from './registration/login';
 import SignupForm from './registration/signup';
@@ -28,17 +29,15 @@ export default function Home() {
       direction="column"
       alignItems="center"
     >
-      <>
-        <div className="Main">
-          <Routes>
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/signup" element={<SignupForm />}/>
-            <Route path="*" element={<Navigate to="/messages" replace />} />
-            <Route index path="/messages" element={<RequireAuth><Messages /></RequireAuth>}/>
-            <Route path="/messages/new" element={<RequireAuth><NewMessage /></RequireAuth>} />
-          </Routes>
-        </div>
-      </>
+      <Box id="Main" className="Main">
+        <Routes>
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignupForm />}/>
+          <Route path="*" element={<Navigate to="/messages" replace />} />
+          <Route index path="/messages" element={<RequireAuth><Messages /></RequireAuth>}/>
+          <Route path="/messages/new" element={<RequireAuth><NewMessage /></RequireAuth>} />
+        </Routes>
+      </Box>
     </Grid>
   );
 }

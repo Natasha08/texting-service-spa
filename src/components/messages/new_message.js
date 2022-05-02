@@ -33,14 +33,16 @@ const Messages = () => {
       const error = _.get(result, 'error.data.error', 'Error creating message, please try again.');
       const errorMessage = emptyForm ? '' : error;
       setError(errorMessage);
+      result.reset();
     } else if (result.isSuccess) {
+      result.reset();
       navigate('/messages');
     }
   }, [result.isLoading, emptyForm, result.isError]);
 
   return (
-    <Box>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Box id="new-message" sx={{maxWidth: '1200px', textAlign: 'center'}}>
+      <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
         <Tabs value={NEW_MESSAGE_TAB} aria-label="login and signup tabs">
           <Tab label="Messages" aria-label="list of text messages" onClick={() => navigate('/messages')} />
           <Tab label="Create Message" aria-label="create new message" />
@@ -56,7 +58,6 @@ const Messages = () => {
 
         <TextField
           id="phone-number"
-          fullWidth
           value={number}
           label="Enter the phone number"
           placeholder="555-555-5555"
@@ -64,15 +65,14 @@ const Messages = () => {
         />
         <TextField
           id="message"
-          fullWidth
           value={text}
           label="Enter your text"
-          placeholder="your mesage"
+          placeholder="your message"
           multiline
-          maxRows={4}
+          maxRows={2}
           onChange={onChange(setText)}
         />
-        <Box sx={{m: 1, position: 'relative'}}>
+        <Box sx={{m: 1, position: 'relative', marginTop: '55px'}}>
           <Button
             role="button"
             name="Send"
