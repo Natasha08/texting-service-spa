@@ -8,10 +8,10 @@ const messages = createSlice({
   initialState,
   reducers: {
     receivedMessages: (state, action) => {
-      return _.orderBy(action.payload, 'created_at', 'desc');
+      return action.payload;
     },
     messageCreated: (state, action) => {
-      return _.orderBy([action.payload, ...state], 'created_at', 'desc');
+      return [action.payload, ...state];
     },
     messageUpdated: (state, action) => {
       const updatedMessage = action.payload;
