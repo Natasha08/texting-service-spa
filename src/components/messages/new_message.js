@@ -38,7 +38,7 @@ const Messages = () => {
       result.reset();
       navigate('/messages');
     }
-  }, [result.isLoading, emptyForm, result.isError]);
+  }, [result, navigate, result.isLoading, emptyForm, result.isError]);
 
   return (
     <Box id="new-message" sx={{maxWidth: '1200px', textAlign: 'center'}}>

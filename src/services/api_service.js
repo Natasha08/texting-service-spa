@@ -1,7 +1,6 @@
 import createApiService from './helpers/create_api_service';
 import { loggedIn, signedUp } from '../reducers/user';
 import { receivedMessages, messageCreated } from '../reducers/messages';
-import _ from 'lodash';
 
 export const API_VERSION = '/api/v1' ;
 const SIGNUP_PATH = '/auth/signup'

@@ -30,7 +30,7 @@ const LoginForm = () => {
       result.reset();
       navigate('/');
     }
-  }, [result.isLoading, emptyForm, result.isError]);
+  }, [result, navigate, result.isLoading, emptyForm, result.isError]);
 
   return (
     <Box id="login" sx={{maxWidth: '1200px', textAlign: 'center'}}>

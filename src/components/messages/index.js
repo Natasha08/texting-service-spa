@@ -10,13 +10,10 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 import { useGetMessagesMutation } from '../../services/api_service';
-import { preventDefault } from '../helpers/event';
 import { messageUpdated } from '../../reducers/messages';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -50,13 +47,15 @@ const Messages = () => {
   }, [getMessages]);
 
   useEffect(() => {
-    if (result.isError) {
+    if (result.isError && !fetched) {
       console.warn("Error fetching messages", result);
       setFetched(true);
+      result.reset();
     } else if (result.isSuccess) {
       setFetched(true);
+      result.reset();
     }
-  }, [result, result.isLoading, result.isError]);
+  }, [fetched, result, result.isLoading, result.isError]);
 
   useEffect(() => {
     if (!channel) {

@@ -9,7 +9,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import FormHelperText from '@mui/material/FormHelperText';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import _ from 'lodash';
 
 import { onChange, preventDefault } from '../helpers/event';
 

@@ -29,7 +29,7 @@ const SignupForm = () => {
       result.reset();
       navigate('/login');
     }
-  }, [result.isLoading, emptyForm, result.isError]);
+  }, [result, navigate, result.isLoading, emptyForm, result.isError]);
 
   return (
     <Box id="signup" sx={{maxWidth: '1200px', textAlign: 'center'}}>
