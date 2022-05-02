@@ -47,7 +47,7 @@ const Messages = () => {
 
   useEffect(() => {
     getMessages();
-  }, []);
+  }, [getMessages]);
 
   useEffect(() => {
     if (result.isError) {
@@ -56,7 +56,7 @@ const Messages = () => {
     } else if (result.isSuccess) {
       setFetched(true);
     }
-  }, [result.isLoading, result.isError]);
+  }, [result, result.isLoading, result.isError]);
 
   useEffect(() => {
     if (!channel) {
@@ -86,7 +86,7 @@ const Messages = () => {
       };
       setChannel(channel);
     }
-  });
+  }, [channel, token, dispatch]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
