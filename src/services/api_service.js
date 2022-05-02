@@ -37,6 +37,7 @@ const headers = (headers, store) => {
   const token = store.getState().user?.token ?? '';
 
   headers.set('Authorization', `Bearer ${token}`);
+  headers.set('Content-Type', 'application/json');
 
   return headers;
 };
