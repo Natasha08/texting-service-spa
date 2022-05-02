@@ -2,10 +2,12 @@ import _ from 'lodash';
 
 import { requiredKeysPresent, respondWith } from './helpers/server';
 
-const APIService = (request, responses={}) => {
-  const {signup={}, login={}} = responses;
+const API_VERSION = '/api/v1';
 
-  if (!request.url.includes('/api/v1')) return Promise.reject(`Unknown API version, ${request.url}`);;
+const APIService = (request, responses={}) => {
+  const {signup={}, login={}, getMessages={}, createMessage} = responses;
+
+  if (!request.url.includes(API_VERSION)) return Promise.reject(`Unknown API version, ${request.url}`);;
 
   if (request.url.endsWith('/signup')) {
     if (requiredKeysPresent({request, name: 'signup', requiredKeys: ['user']})) {
@@ -18,6 +20,20 @@ const APIService = (request, responses={}) => {
       return respondWith(login);
     }
   }
+
+  if (request.url.endsWith('/text_messages')) {
+    if (request.method === 'GET') {
+      if (requiredKeysPresent({request, name: 'getMessages', requiredKeys: []})) {
+        return respondWith(getMessages);
+      }
+    }
+    if (request.method === 'POST') {
+      if (requiredKeysPresent({request, name: 'createMessage', requiredKeys: ['to_number', 'text']})) {
+        return respondWith(createMessage);
+      }
+    }
+  }
+
 };
 
 export default APIService;

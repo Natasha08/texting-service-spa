@@ -6,6 +6,7 @@ body {
   height: 100vh;
 
   .Main {
+    width: 100%;
     padding: 0 5px 10px 5px;
   }
 
@@ -57,12 +58,27 @@ body {
   }
 }
 
-.registration-form {
+.registration-form,
+.new-message-form {
   display: grid;
-  grid-template-rows: 8rem 5rem 5rem 3rem;
+  text-align: center;
+  grid-template-rows: 5rem 5rem 5rem 3rem;
   grid-template-areas:
     'header'
     'input'
     'input'
     'button';
+  max-width: 500px;
+
+  .title {
+    padding-top: 25px;
+  }
+}
+
+#messages {
+  max-width: 1000px;
+
+  .css-144ebsl {
+    max-width: 100%;
+  }
 }

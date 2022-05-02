@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import _ from 'lodash';
-
-import Form from './Form';
-import { useSignupMutation } from '../../services/api_service';
-
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+
+import Form from './form';
+import { useSignupMutation } from '../../services/api_service';
 
 const SIGNUP_TAB = 1;
 
@@ -17,12 +16,13 @@ const SignupForm = () => {
   const [error, setError] = useState(null);
   const [showPassword, togglePasswordVisibility] = useState(false);
   const [signup, result] = useSignupMutation({fixedCacheKey: 'user-auth-signup'});
-  const emptyForm = _.every(_.map([email, password], _.isEmpty));
+  const emptyForm = _.some(_.map([email, password], _.isEmpty));
   const navigate = useNavigate();
 
   useEffect(() => {
     if (result.isError) {
-      const errorMessage = emptyForm ? '' : 'Error signing up, please try again.';
+      const error = _.get(result, 'error.data.error', 'Error signing up, please try again.');
+      const errorMessage = emptyForm ? '' : error;
       setError(errorMessage);
     } else if (result.isSuccess) {
       navigate('/login');
@@ -48,6 +48,7 @@ const SignupForm = () => {
         action={signup}
         data={{user: {email, password}}}
         buttonText="Create Account"
+        emptyForm={emptyForm}
       />
     </Box>
   )

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-export const onChange = (callback) => (event) => {
-  const input = _.trim(event.target.value);
-  const value = _.isEmpty(input) ? '' : input;
+export const onChange = (callback) => ({ target }) => {
+  const trimmedInput = _.trim(target.value);
+  const value = _.isEmpty(trimmedInput) ? '' : target.value;
   callback(value);
 };
 

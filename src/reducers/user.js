@@ -10,7 +10,7 @@ const user = createSlice({
       return action.payload;
     },
     signedUp: (state, action) => {
-      return {...action.payload};
+      return action.payload;
     },
     APP_RESET: () => {
       return initialState;

@@ -1,3 +1,4 @@
+import React from 'react';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
@@ -6,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import FormHelperText from '@mui/material/FormHelperText';
+import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import _ from 'lodash';
 
@@ -14,14 +16,16 @@ import { onChange, preventDefault } from '../helpers/event';
 export default function Form(props) {
   const {
     error, email, setEmail, password, setPassword, showPassword,
-    action, data, title, buttonText, result, togglePasswordVisibility
+    action, data, title, buttonText, result, togglePasswordVisibility, emptyForm
   } = props ?? {};
 
   return <form className="registration-form">
-    <div>
-      <h4>{title}</h4>
-      {!!error && <FormHelperText error={true}>{error}</FormHelperText>}
-    </div>
+    <div className='title'>{title}</div>
+    {!!error && (
+      <Typography gutterBottom variant="subtitle2" component="em">
+        <FormHelperText error={true}>{error}</FormHelperText>
+      </Typography>
+    )}
 
     <TextField
       value={email}
@@ -52,7 +56,7 @@ export default function Form(props) {
         role="button"
         name={buttonText}
         variant="contained"
-        disabled={result?.status === 'pending'}
+        disabled={result?.status === 'pending' || emptyForm}
         onClick={preventDefault(action, data)}
       >
         {buttonText}
