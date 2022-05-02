@@ -77,8 +77,6 @@ const Messages = () => {
           setAlert({message: "message delivered!", severity: 'success'});
           setOpen(true);
           if (!_.isEmpty(data.message)) {
-            console.log("IM WINNING", data)
-
             dispatch(messageUpdated(data.message));
           }
         }

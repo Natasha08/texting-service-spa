@@ -24,10 +24,6 @@ const Messages = () => {
   const navigate = useNavigate();
   const emptyForm = _.some(_.map([text, number], _.isEmpty));
 
-  const sendMessage=(data) => {
-    createMessage(data);
-  };
-
   useEffect(() => {
     if (result.isError) {
       const error = _.get(result, 'error.data.error', 'Error creating message, please try again.');
@@ -78,7 +74,7 @@ const Messages = () => {
             name="Send"
             variant="contained"
             disabled={result?.status === 'pending' || emptyForm}
-            onClick={preventDefault(sendMessage, {to_number: number, text})}
+            onClick={preventDefault(createMessage, {to_number: number, text})}
           >
             Send
           </Button>
@@ -88,7 +84,7 @@ const Messages = () => {
               sx={{
                 color: 'blue',
                 position: 'absolute',
-                top: '50%',
+                bottom: '-30px',
                 left: '50%',
                 marginTop: '-12px',
                 marginLeft: '-12px',
