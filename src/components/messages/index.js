@@ -16,9 +16,6 @@ import MuiAlert from '@mui/material/Alert';
 import { useGetMessagesMutation } from '../../services/api_service';
 import { messageUpdated } from '../../reducers/messages';
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 const MESSAGES_TAB = 0;
 const RETRYING_ERROR = 'Failed to send text message after several attempts, retrying with a new SMS provider';
 
@@ -27,6 +24,9 @@ const SetChip = ({label, color, status}) => {
   const isDisabled = status !== label ? {disabled: true} : {};
   return <Chip {...chipColor} label={label} {...isDisabled} />;
 };
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Messages = () => {
   const [fetched, setFetched] = useState(false);
@@ -37,7 +37,6 @@ const Messages = () => {
   const [alert, setAlert] = React.useState({});
 
   const dispatch = useDispatch();
-
 
   const [getMessages, result] = useGetMessagesMutation({fixedCacheKey: 'messages'});
   const navigate = useNavigate();
@@ -85,12 +84,8 @@ const Messages = () => {
     }
   }, [channel, token, dispatch]);
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
+  const closeBar = (event, reason) => {
+    reason !== 'clickaway' && setOpen(false);
   };
 
   return (
@@ -139,7 +134,7 @@ const Messages = () => {
             <div>There are no messages yet.</div>
           )}
         </Box>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={closeBar}>
         <Alert onClose={() => setOpen(false)} severity={alert.severity} sx={{width: '100%'}}>
           {alert.message}
         </Alert>
