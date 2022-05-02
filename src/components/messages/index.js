@@ -111,22 +111,8 @@ const Messages = () => {
       </Box>
         <Box style={{'marginTop': '20px'}}>
           <Typography gutterBottom variant="subtitle2" component="em">
-            <span onClick={preventDefault(fetchMessages)}>
-              <RefreshIcon />
-            </span>
             List of text messages sent, with their statuses
           </Typography>
-          {!fetched && <CircularProgress
-            aria-label="fetch messages"
-            size={24}
-            sx={{
-              color: 'blue',
-              top: '50%',
-              left: '50%',
-              marginTop: '-12px',
-              marginLeft: '-12px',
-            }}
-          />}
           {messages.length ? messages.map((message) => (
             <div key={message.sms_message_id}>
               <Box sx={{my: 3, mx: 2}}>
