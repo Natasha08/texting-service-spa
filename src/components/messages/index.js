@@ -95,11 +95,6 @@ const Messages = () => {
     setOpen(false);
   };
 
-  const fetchMessages = () => {
-    setFetched(false);
-    getMessages();
-  };
-
   return (
     <Box id="messages" sx={{maxWidth: '1200px', textAlign: 'left'}}>
       <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
