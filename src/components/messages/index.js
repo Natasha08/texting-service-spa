@@ -59,7 +59,7 @@ const Messages = () => {
 
   useEffect(() => {
     if (!channel) {
-      const cable = actionCable.createConsumer(`ws://localhost:3000/cable`, token);
+      const cable = actionCable.createConsumer(process.env.REACT_APP_WEB_SOCKET_HOST, token);
       const channel = cable.subscriptions.create({channel: "ChatChannel"});
       channel.received = (data={}) => {
         if (data.error) {
