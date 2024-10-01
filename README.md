@@ -6,8 +6,6 @@
 
 This is an application to authenticate and send messages using the [Text Messaging API](https://github.com/Natasha08/texting-service)
 
-[Live URL](https://natasha-texting-service.netlify.app/)
-
 ## Technology and Stack
 - [PostgreSQL 14.1](https://www.postgresql.org/docs/current/)
 - [node](https://nodejs.org/) (see `.nvmrc` for version)
